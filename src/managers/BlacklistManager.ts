@@ -7,6 +7,7 @@ import { BlacklistRecordType, type IBlacklistRecord } from '#schemas/database/Bl
 import { Guild } from '#schemas/database/Guild';
 import { MongoDBClient } from '#structures/MongoDBClient';
 import getGuild from '#util/getGuild';
+import { logger } from '#util/logger';
 import { guildToString } from '#util/stringFormatters';
 
 type BlacklistRecordOptions = Partial<{
@@ -116,8 +117,8 @@ class BlacklistManager extends MongoDBClient {
           context: { guildId },
         }
       )
-      .then(() => client.logger.info(`Left blacklisted guild ${guildId}`))
-      .catch(client.logger.error);
+      .then(() => logger.info(`Left blacklisted guild ${guildId} on shard #${shardId}`))
+      .catch(logger.error);
   }
 }
 
