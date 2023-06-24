@@ -7,8 +7,8 @@ import { BlacklistRecordType, type IBlacklistRecord } from '#schemas/database/Bl
 import { Guild } from '#schemas/database/Guild';
 import { MongoDBClient } from '#structures/MongoDBClient';
 import getGuild from '#util/getGuild';
-import { logger } from '#util/logger';
 import { guildToString } from '#util/stringFormatters';
+import { minToMs } from '#util/timeConverters';
 
 type BlacklistRecordOptions = Partial<{
   reason: string | null;
@@ -38,7 +38,7 @@ class BlacklistManager extends MongoDBClient {
     return guild?.blacklistRecords || [];
   }
 
-  async startupCheck() {
+  async orphansCleanup() {
     client.logger.debug('Checking for blacklisted guilds...');
 
     const guildIds: Snowflake[] = (
@@ -55,6 +55,10 @@ class BlacklistManager extends MongoDBClient {
     guildIds.forEach(async (guildId) => {
       if (client.guilds.cache.get(guildId) && config.antiSpam.autoLeave && !isDev) this.leaveGuild(guildId);
     });
+  }
+
+  public startOrphansCleanupInterval() {
+    setInterval(() => this.orphansCleanup(), minToMs(15));
   }
 
   async add(guildId: Snowflake, options?: BlacklistRecordOptions) {
@@ -117,8 +121,8 @@ class BlacklistManager extends MongoDBClient {
           context: { guildId },
         }
       )
-      .then(() => logger.info(`Left blacklisted guild ${guildId} on shard #${shardId}`))
-      .catch(logger.error);
+      .then(() => client.logger.info(`Left blacklisted guild ${guildId}`))
+      .catch(client.logger.error);
   }
 }
 
