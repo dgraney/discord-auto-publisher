@@ -114,7 +114,8 @@ class BlacklistManager extends MongoDBClient {
       .broadcastEval(
         async (c: Client, { guildId }: { guildId: Snowflake }) => {
           const guild = c.guilds?.cache?.get(guildId);
-          if (guild) guild.leave();
+          if (guild) return guild.leave();
+          return;
         },
         {
           cluster: shardId,
