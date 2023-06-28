@@ -30,7 +30,7 @@ const client = new AutoPublisherClient({
     UserManager: 0,
     VoiceStateManager: 0,
   }),
-  intents: [IntentBits.Guilds, IntentBits.GuildMessages, IntentBits.DirectMessages, IntentBits.MessageContent],
+  intents: [IntentBits.GuildMessages],
   partials: [Partials.Channel, Partials.GuildMember],
   shards: getInfo().SHARD_LIST,
   shardCount: getInfo().TOTAL_SHARDS,
