@@ -92,9 +92,6 @@ class AntiSpamManager extends RedisClient {
     const KEY = this._createKey(channel.id);
     const { guild } = channel;
     await this.client.del(KEY);
-    return client.blacklist.add(guild.id, {
-      reason: `Spam limit hit (${antiSpam.messagesThreshold}) in ${channelToString(channel)}`,
-    });
   }
 
   private async _logRateLimited(channelId: Snowflake, count: number) {

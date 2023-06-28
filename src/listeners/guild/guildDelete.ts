@@ -4,7 +4,6 @@ import Event from '#structures/Event';
 import { guildMembersToString, guildToString } from '#util/stringFormatters';
 
 export default new Event(Events.GuildDelete, async (guild) => {
-  if (await client.blacklist.has(guild.id)) return;
 
   const newsChannelIds = guild.channels.cache
     .filter((channel) => channel.type === ChannelType.GuildAnnouncement)

@@ -9,7 +9,6 @@ const botConfig = JSON.parse(botConfigFile) as z.infer<typeof BotConfigSchema>;
 
 const envVars: z.infer<typeof EnvSchema> = {
   botToken: process.env.BOT_TOKEN,
-  mongoUri: process.env.MONGO_URI,
   redisUri: process.env.REDIS_URI,
 
   botAdmins: process.env.BOT_ADMINS.split(/,\s*/g),

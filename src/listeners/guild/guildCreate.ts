@@ -8,11 +8,6 @@ import { guildMembersToString, guildToString } from '#util/stringFormatters';
 const { antiSpam } = config;
 
 export default new Event(Events.GuildCreate, async (guild) => {
-  if (await client.blacklist.has(guild.id)) {
-    if (antiSpam.autoLeave && !isDev) client.blacklist.leaveGuild(guild.id);
-    return;
-  }
-
   const members = guildMembersToString(guild);
   client.logger.debug(`Joined ${guildToString(guild)} with ${members}.`);
 });

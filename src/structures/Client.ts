@@ -14,14 +14,12 @@ class AutoPublisherClient extends Client {
   public commands: CommandsCollection = new Collection();
 
   public logger = this.cluster.logger;
-  public blacklist = this.cluster.blacklist;
   public antiSpam = this.cluster.antiSpam;
   public crosspostQueue = this.cluster.crosspostQueue;
   public cache = this.cluster.cache;
 
   public async start() {
     return Promise.all([
-      this.blacklist.connect(),
       this.antiSpam.connect(),
       this.cache.requestLimits.connect(),
       this.cache.crossposts.connect(),
